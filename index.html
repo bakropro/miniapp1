@@ -6,23 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
-  <h1>Mini App работает 🚀</h1>
-  <p>Если ты это видишь — всё ок</p>
+  <button id="send">Отправить тестовые данные</button>
 
-  <!-- Telegram WebApp SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.ready();
 
-  <script>
-    const tg = window.Telegram.WebApp;
+  document.getElementById("send").onclick = () => {
+    const data = {
+      action: "test",
+      message: "Mini App работает",
+      time: Date.now()
+    };
 
-    tg.ready();
+    tg.sendData(JSON.stringify(data));
+  };
+</script>
 
-    if (tg.initDataUnsafe?.user) {
-      document.body.insertAdjacentHTML(
-        "beforeend",
-        `<p>Привет, ${tg.initDataUnsafe.user.first_name}!</p>`
-      );
-    }
-  </script>
 </body>
 </html>
+
