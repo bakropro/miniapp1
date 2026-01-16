@@ -4,27 +4,90 @@
   <meta charset="UTF-8" />
   <title>Telegram Mini App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #2ea6ff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:active {
+      opacity: 0.8;
+    }
+
+    .info {
+      margin-top: 15px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
-  <button id="send">Отправить тестовые данные</button>
+  <h1>Mini App работает 🚀</h1>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-  const tg = window.Telegram.WebApp;
-  tg.ready();
+  <div class="info" id="userInfo">
+    Пользователь: неизвестен
+  </div>
 
-  document.getElementById("send").onclick = () => {
-    const data = {
-      action: "test",
-      message: "Mini App работает",
-      time: Date.now()
+  <br />
+
+  <button id="sendBtn">Отправить тестовые данные</button>
+
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+
+    // Сообщаем Telegram, что Mini App готов
+    tg.ready();
+
+    // Расширяем Mini App на весь экран
+    tg.expand();
+
+    // Показываем информацию о пользователе
+    const user = tg.initDataUnsafe?.user;
+
+    if (user) {
+      document.getElementById("userInfo").innerText =
+        `Пользователь: ${user.first_name} (id: ${user.id})`;
+    }
+
+    // Кнопка отправки данных
+    document.getElementById("sendBtn").onclick = () => {
+      alert("Кнопка нажата. Отправляем данные боту.");
+
+      const data = {
+        action: "test",
+        text: "Mini App работает",
+        user_id: user?.id || null,
+        timestamp: Date.now()
+      };
+
+      console.log("Отправляем данные:", data);
+
+      // Отправка данных в бота
+      tg.sendData(JSON.stringify(data));
     };
-
-    tg.sendData(JSON.stringify(data));
-  };
-</script>
-
+  </script>
 </body>
 </html>
-
-
